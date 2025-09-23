@@ -1,0 +1,47 @@
+# Dépendances
+/node_modules
+
+# Fichier pour les variables d'environnement
+.env
+
+# Fichiers de log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+Ensuite, le fichier `package.json` qui définit notre projet et ses dépendances.
+
+
+http://googleusercontent.com/immersive_entry_chip/0
+
+Le point d'entrée principal de l'application, `server.js`.
+
+
+http://googleusercontent.com/immersive_entry_chip/1
+
+Maintenant, les fichiers dans le dossier `src`.
+
+Le modèle `user.model.js` qui communique avec la base de données.
+
+
+http://googleusercontent.com/immersive_entry_chip/2
+
+Le service `auth.service.js` qui contient la logique métier (création, connexion).
+
+
+http://googleusercontent.com/immersive_entry_chip/3
+
+Le contrôleur `auth.controller.js` qui reçoit les requêtes web.
+
+
+http://googleusercontent.com/immersive_entry_chip/4
+
+Et pour finir, le fichier `auth.routes.js` qui définit les URLs de notre API.
+
+
+http://googleusercontent.com/immersive_entry_chip/5
+
+Voilà ! Vous avez maintenant tous les fichiers nécessaires. Une fois que tout est en place, vous pouvez lancer `npm install` puis `npm run dev` dans votre terminal pour démarrer le serveur.
+
+Faites-moi savoir quand vous êtes prêt pour la suite !
