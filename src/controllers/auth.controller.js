@@ -1,50 +1,48 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/user.model.js');
+const AuthService = require('../services/auth.service');
 
-// Le service contient la logique métier complexe.
+// Le contrôleur fait le lien entre la requête HTTP et le service approprié.
 
-const AuthService = {
-  // Service pour l'inscription d'un utilisateur
-  signup: async (email, password) => {
-    // Vérifier si l'utilisateur existe déjà
-    const existingUser = await User.findByEmail(email);
-    if (existingUser) {
-      throw new Error('Cet email est déjà utilisé.');
+const AuthController = {
+  // Gère la requête d'inscription
+  signup: async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      if (!email || !password) {
+        return res.status(400).json({ message: 'Email et mot de passe sont requis.' });
+      }
+
+      const user = await AuthService.signup(email, password);
+      res.status(201).json({ message: 'Utilisateur créé avec succès', user });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
     }
-
-    // Hacher le mot de passe
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    // Créer l'utilisateur
-    const newUser = await User.create(email, hashedPassword);
-    return newUser;
   },
 
-  // Service pour la connexion d'un utilisateur
-  login: async (email, password) => {
-    // Trouver l'utilisateur
-    const user = await User.findByEmail(email);
-    if (!user) {
-      throw new Error('Email ou mot de passe incorrect.');
+  // Gère la requête de connexion
+  login: async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const result = await AuthService.login(email, password);
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(401).json({ message: error.message });
     }
+  },
 
-    // Vérifier le mot de passe
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
-      throw new Error('Email ou mot de passe incorrect.');
+  // Gère la requête de connexion/inscription via Meta
+  metaLogin: async (req, res) => {
+    try {
+      const { accessToken } = req.body;
+      if (!accessToken) {
+        return res.status(400).json({ message: 'accessToken est requis.' });
+      }
+      const result = await AuthService.metaLogin(accessToken);
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(401).json({ message: error.message });
     }
-
-    // Générer le token JWT
-    const token = jwt.sign(
-      { userId: user.id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN }
-    );
-
-    return { token, userId: user.id };
   },
 };
 
-module.exports = AuthService;
+module.exports = AuthController;
 

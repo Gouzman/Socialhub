@@ -2,6 +2,7 @@
 require('dotenv').config(); // Charge les variables d'environnement depuis le fichier .env
 const express = require('express');
 const authRoutes = require('./src/routes/auth.routes');
+const userRoutes = require('./src/routes/user.routes'); // <-- Importer les routes utilisateur
 
 // Initialisation de l'application Express
 const app = express();
@@ -19,10 +20,12 @@ app.get('/', (req, res) => {
 
 // Utilisation des routes d'authentification
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes); // <-- Utiliser les routes utilisateur
 
 
 // Démarrage du serveur
 app.listen(PORT, () => {
   console.log(`Le serveur est lancé sur le port ${PORT}`);
 });
+
 

@@ -7,5 +7,8 @@ const router = express.Router();
 router.post('/signup', AuthController.signup);
 router.post('/login', AuthController.login);
 
+// Nouvelle route pour l'authentification Meta
+router.post('/meta/login', AuthController.metaLogin);
+
 module.exports = router;
 
